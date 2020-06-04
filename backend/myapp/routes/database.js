@@ -4,7 +4,7 @@ var csvParser = require('csv-parser');
 var fs = require('fs');
 
 
-var getDataByDay = function(day){
+var getDataByDay = function(day, res){
     return new Promise((resolve, reject) =>{
     var results = [];
     var filePath = './public/csv/' + day + '.csv';
@@ -61,7 +61,7 @@ var getDataByDestAndTime = async function(req, res, next){
     var dayResult;
     try
     {
-        var dayResult = await getDataByDay(req.body.day);
+        dayResult = await getDataByDay(req.body.day, res);
         console.log(dayResult);
         //process json according to origin and destination
         var newArray = dayResult["resultData"].filter(function (el) {

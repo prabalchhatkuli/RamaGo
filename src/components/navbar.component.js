@@ -17,6 +17,7 @@ export default class Naviagation extends Component{
 						<Nav.Link href="/area">Area Shuttle</Nav.Link>
 						<Nav.Link href="/train">Train Shuttle</Nav.Link>
                         <Nav.Link href="/nyc">New York(Coach USA)</Nav.Link>
+						<Nav.Link href="/upload">Upload Schedule</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>

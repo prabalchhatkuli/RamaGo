@@ -6,6 +6,7 @@ import Navbar from "./components/navbar.component";
 import AreaShuttle from "./components/areashuttle.component";
 import TrainShuttle from "./components/trainshuttle.component";
 import MainPage from "./components/mainpage.component";
+import Upload from "./components/upload.component";
 
 
 import './App.css';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/area" component={AreaShuttle}/>
         <Route path="/train" component={TrainShuttle}/>
         <Route path="/nyc" component={AreaShuttle}/>
+        <Route path="/upload" component={Upload}/>
       </div>
     </Router>
   );
