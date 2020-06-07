@@ -8,7 +8,6 @@ import TrainShuttle from "./components/trainshuttle.component";
 import MainPage from "./components/mainpage.component";
 import Upload from "./components/upload.component";
 
-
 import './App.css';
 
 function App() {
