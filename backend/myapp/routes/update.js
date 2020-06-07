@@ -2,7 +2,11 @@ var express = require('express');
 var router = express.Router();
 const formidable = require('formidable');
 var csvParser = require('csv-parser');
+//model of the schema
+let Schedule = require('../models/schedule.model');
+
 var waitforfileInformation = false;
+var filenum = 1234;
 
 //uploaded file needs to be processed and stored in a database
 var handleUploadedFile = async function(req, res, next){
@@ -25,11 +29,37 @@ var handleUploadedFile = async function(req, res, next){
       throw err;
     });
 
-    res.end("file uploaded successfully");
+    //return randomly generated 4 digit code with the successful response 
+    res.send({secret_tempcode:1234});
+    res.end();
 }
 
 
+var handleFileInformation = function(req, res, next){
+  //take the information from request validate information and pass to updateDatabase
+  //updateDatabase(req, res, next),
+  console.log(req.body);
+
+  res.send(info);
+
+  res.end();
+}
+
+//will respond when the database is updated
+const updateDatabase = function(req, res, next){
+
+
+
+  //once this is completed call the res.end() function
+  //then call the managedatabase() function which will remove empty rows, empty columns, etc
+}
+
+const managedatabase = function(){
+
+}
+
 router.post('/uploadfile', handleUploadedFile);
 
+router.post('/uploadfile/'+filenum, handleFileInformation);
 
 module.exports = router;

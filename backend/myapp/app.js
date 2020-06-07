@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cors = require('cors');
 //-----------------------------added dependencies-------------------------
 //const csv = require('csv-parser');
+require('dotenv').config()
+const mongoose = require('mongoose');
 //------------------------------------------------------------------------
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,7 +26,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//---------------------mongoose connection---------------
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri,{useNewUrlParser:true, useCreateIndex:true});
+const connection=mongoose.connection;
+connection.once('open',()=>{
+  console.log("MongoDB database connection established successfully.");
+})
+//---------------------------------------------------
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/database', databaseRouter);
