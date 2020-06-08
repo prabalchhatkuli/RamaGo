@@ -14,8 +14,7 @@ export default class Naviagation extends Component{
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="mr-auto">
-						<Nav.Link href="/area">Area Shuttle</Nav.Link>
-						<Nav.Link href="/train">Train Shuttle</Nav.Link>
+						<Nav.Link href="/area">Get Shuttle Schedule</Nav.Link>
                         <Nav.Link href="/nyc">New York(Coach USA)</Nav.Link>
 						<Nav.Link href="/upload">Upload Schedule</Nav.Link>
 					</Nav>

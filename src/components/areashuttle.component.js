@@ -4,6 +4,7 @@ import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import axios from 'axios'
 import AddressList from "../components/listgroup.component";
 
+//need to obtain information about the day's destination from a ajax call to the server
 const dayList=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const destList=['Select','Ramapo','Moes','Interstate',	'Burlington/Modells','Garden State', 'Paramus Park','Care Plus','Fashion Center','Waldwick Medical','UG/Houlihans','Shannon Rose','Ramsey Square','Stateline','M/B','CPA','Overlook','Laurel Deck','Village', 'Bus Stop'];
 const originList=['Ramapo','Moes','Interstate',	'Burlington/Modells','Garden State', 'Paramus Park','Care Plus','Fashion Center','Waldwick Medical','UG/Houlihans','Shannon Rose','Ramsey Square','Stateline','M/B','CPA','Overlook','Laurel Deck','Village', 'Bus Stop'];
