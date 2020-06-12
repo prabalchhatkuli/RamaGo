@@ -42,15 +42,20 @@ var handleFileInformation = async function(req, res, next){
   console.log(req.body);
   //reads all rows from the csv and parses it into this array
   let csvArray = await GetFileInformation(res);
+  //validate*********************************************************************validate*********************
   //update Database with information
-
   console.log(csvArray);
+  var filePath = './routes/temp_uploads/' + filenum;
 
   res.status(200).send({receipt:"good"})
 
   res.end();
 
   //compress database
+}
+
+const updateDatabase = function(payload){
+  
 }
 
 //will respond when the database is updated
@@ -68,6 +73,9 @@ const GetFileInformation = function(res){
         });
     })
     .pipe(csvParser())
+    .on('headers', function (headerList) {
+      console.log(headerList)
+    })
     .on('data', (data) => {
         results.push(data);
     })
