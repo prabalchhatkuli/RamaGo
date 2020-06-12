@@ -43,19 +43,29 @@ var handleFileInformation = async function(req, res, next){
   //reads all rows from the csv and parses it into this array
   let csvArray = await GetFileInformation(res);
   //validate*********************************************************************validate*********************
-  //update Database with information
-  console.log(csvArray);
-  var filePath = './routes/temp_uploads/' + filenum;
+  console.log(csvArray, res);
 
   res.status(200).send({receipt:"good"})
+
+  //update Database with information
+  await updateDatabase(csvArray);
 
   res.end();
 
   //compress database
 }
 
-const updateDatabase = function(payload){
-  
+const updateDatabase = function(payload, res){
+    Schedule.insertMany(payload.resultData)
+    .then(function(){ 
+      console.log("Data inserted")  // Success 
+  })
+    .catch(function(error){ 
+      console.log(error)      // Failure 
+      return res.status(400).send({
+        message: 'Error while inserting in database!'
+    });
+  })
 }
 
 //will respond when the database is updated
