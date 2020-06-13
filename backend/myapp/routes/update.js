@@ -40,11 +40,15 @@ var handleFileInformation = async function(req, res, next){
   //take the information from request validate information and pass to updateDatabase
   //updateDatabase(req, res, next),
   console.log(req.body);
+  //need to process the data and remove BOM UTF-8 characters from the CSV
+  await processCSV();
+
   //reads all rows from the csv and parses it into this array
   let csvArray = await GetFileInformation(res);
   //validate*********************************************************************validate*********************
-  console.log(csvArray, res);
-
+  let temp_array=[...csvArray.resultData];
+  
+    console.log(temp_array[0]['Leave Campus']);
   res.status(200).send({receipt:"good"})
 
   //update Database with information
@@ -54,6 +58,25 @@ var handleFileInformation = async function(req, res, next){
 
   //compress database
 }
+
+//process file
+const processCSV = function(){
+  return new Promise((resolve, reject)=>{
+    var filePath = './routes/temp_uploads/' + filenum;
+    fs.readFile(filePath, function (err,data) {
+      if (err) {
+        reject(err);
+      }
+      var result = data.toString().replace(/[\u200B-\u200D\uFEFF]/g, "");
+    
+      fs.writeFile(filePath, result, function (err) {
+         if (err){
+           reject(err)
+         };
+      });
+      resolve();
+  })
+})}
 
 const updateDatabase = function(payload, res){
     Schedule.insertMany(payload.resultData)
