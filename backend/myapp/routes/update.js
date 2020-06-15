@@ -85,7 +85,6 @@ var handleFileInformation = async function(req, res, next){
   });
 
   console.log(temp_array);
-  
 
   //remove all records with day={daysAffected} && route={route}
   updateConflicts(req.body.Route, req.body.daysAffected);
@@ -117,31 +116,34 @@ const processCSV = function(){
   })
 })}
 
-const updateConflicts = function(route, daysAffected){
+const updateConflicts = async function(route, daysAffected){
     //find documents based on route
           //out of the found documents find the ones whose days are affected i.e. are true and are 'on' in daysAffected
         //for each date of the documents update the document to show false on that date.
     //there should be one area and one train for each day, it can be same as well.
     
-    let listOfConflictedDays;
-    let listOfConflictedDoc; //contains ID
+
+    let listOfConflictedDays=[];
+    let listOfConflictedDoc=[]; //contains ID
+    let docUpdate = {};
     for (var key of Object.keys(daysAffected)) {
       if(daysAffected[key]==='on')
       {
         listOfConflictedDays.push(key);
+        docUpdate[key]=false;
       }
     }
 
     if(route==='Area')
     {
-      Schedule.find({ 'Area': true },function (err, docs) {
+      await Schedule.find({ 'Area': true },function (err, docs) {
         //for each doc in docs
           //find docs where at least one day in daysAffected is true
             //update the doc with the false in each of the day values
             docs.forEach((doc)=>{
-              daysAffected.forEach((day)=>{
+              listOfConflictedDays.forEach((day)=>{
                 if(doc[day]===true)
-                {
+                {console.log(day);
                   if(!(doc._id in listOfConflictedDoc)){
                   listOfConflictedDoc.push(doc._id);
                   }
@@ -149,24 +151,82 @@ const updateConflicts = function(route, daysAffected){
               });
             });
       });
-      console.log(listOfConflictedDoc);
     }
     else if(route==='Train')
     {
-
+      await Schedule.find({ 'Train': true },function (err, docs) {
+        //for each doc in docs
+          //find docs where at least one day in daysAffected is true
+            //update the doc with the false in each of the day values
+            docs.forEach((doc)=>{
+              listOfConflictedDays.forEach((day)=>{
+                if(doc[day]===true)
+                {console.log(day);
+                  if(!(doc._id in listOfConflictedDoc)){
+                  listOfConflictedDoc.push(doc._id);
+                  }
+                }
+              });
+            });
+      });
     }
     else if(route==='Both')
     {
-
+      await Schedule.find({ 'Area': true },function (err, docs) {
+        //for each doc in docs
+          //find docs where at least one day in daysAffected is true
+            //update the doc with the false in each of the day values
+            docs.forEach((doc)=>{
+              listOfConflictedDays.forEach((day)=>{
+                if(doc[day]===true)
+                {console.log(day);
+                  if(!(doc._id in listOfConflictedDoc)){
+                  listOfConflictedDoc.push(doc._id);
+                  }
+                }
+              });
+            });
+      });
+      await Schedule.find({ 'Train': true },function (err, docs) {
+        //for each doc in docs
+          //find docs where at least one day in daysAffected is true
+            //update the doc with the false in each of the day values
+            docs.forEach((doc)=>{
+              listOfConflictedDays.forEach((day)=>{
+                if(doc[day]===true)
+                {console.log(day);
+                  if(!(doc._id in listOfConflictedDoc)){
+                  listOfConflictedDoc.push(doc._id);
+                  }
+                }
+              });
+            });
+      });
     }
     else if(route==='Express')
     {
-
+      await Schedule.find({ 'Express': true },function (err, docs) {
+        //for each doc in docs
+          //find docs where at least one day in daysAffected is true
+            //update the doc with the false in each of the day values
+            docs.forEach((doc)=>{
+              listOfConflictedDays.forEach((day)=>{
+                if(doc[day]===true)
+                {console.log(day);
+                  if(!(doc._id in listOfConflictedDoc)){
+                  listOfConflictedDoc.push(doc._id);
+                  }
+                }
+              });
+            });
+      });
     }
     else
     {
       console.log("Error: the given route "+route+" was not found");
     }
+    let res = await Schedule.updateMany({'_id':{$in: listOfConflictedDoc}},docUpdate);
+    console.log("Modified docs = " + res.nModified);
 }
 
 const updateDatabase = function(payload, res){
