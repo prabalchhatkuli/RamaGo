@@ -10,8 +10,9 @@ export default class Upload extends Component {
         this.state={
             filename:'',
             selectedFile: null,
-            isFileUploaded: false,
+            isFileUploaded: true,
             selectedDay:'',
+            selectedRoute:'',
             customDateSelection: false,
             customDayArray:{Sunday:'off', Monday:'off', Tuesday:'off', 
                             Wednesday:'off', Thursday:'off', Friday:'off', Saturday:'off'}
@@ -20,15 +21,34 @@ export default class Upload extends Component {
         this.onNameChange=this.onNameChange.bind(this);
         this.onFileUpload=this.onFileUpload.bind(this);
         this.daySelectionChange=this.daySelectionChange.bind(this);
+        this.routeSelectionChange=this.routeSelectionChange.bind(this);
         this.customDayChoice=this.customDayChoice.bind(this);
         this.onInfoSubmit = this.onInfoSubmit.bind(this);
     }
 
+    async componentDidMount(){
+        let temp_customDateArray={...this.state.customDayArray};
+        ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((type)=>{
+            temp_customDateArray[type]='on';
+            return null;
+        });
+        await this.setState({
+            selectedDay:'Weekday',
+            selectedRoute: 'Area',
+            customDayArray:temp_customDateArray
+        });
+}
+
+    async routeSelectionChange(e){
+        await this.setState({selectedRoute:e.target.value});
+    }
+
     async onInfoSubmit(e)
     {
+        let payload={Route:this.state.selectedRoute, daysAffected:this.state.customDayArray};
         try
         {
-            const response = await axios.post('http://localhost:5000/update/uploadfile/1234',this.state.customDayArray);
+            const response = await axios.post('http://localhost:5000/update/uploadfile/1234',payload);
 
             //no need to implement callback
             this.setState(()=>({
@@ -207,6 +227,14 @@ export default class Upload extends Component {
                                 //add select boxes to select weekday/weekend/all week/custom
                                 //if custom let the user select the days radio boxes, it is valid for
                             }
+                            <Form.Group controlId="exampleForm.SelectCustom">
+                                <select ref="userInput" className="form-control" onChange={this.routeSelectionChange}>
+                                        <option>Area</option>
+                                        <option>Train</option>
+                                        <option>Both</option>
+                                        <option>Express</option>
+                                </select>
+                            </Form.Group>
                             <Form.Group controlId="exampleForm.SelectCustom">
                                 <select ref="userInput" className="form-control" onChange={this.daySelectionChange}>
                                         <option>Weekday</option>

@@ -50,16 +50,16 @@ const scheduleSchema = new Schema({
         "Bus Stop":{type: String,default: '-'},
         "Ramsey 17 II":{type: String,default: '-'},
         "Garden State Mall":{type: String,default: '-'},
-        "Area Shuttle":{type: Boolean,default: 'true'},
-        "Train Shuttle":{type: Boolean,default: 'true'},
-        "Gardenstate":{type: Boolean,default: 'true'},
-        "Sunday":{type: Boolean,default: 'true'},
-        "Monday":{type: Boolean,default: 'true'},
-        "Tuesday":{type: Boolean,default: 'true'},
-        "Wednesday":{type: Boolean,default: 'true'},
-        "Thursday":{type: Boolean,default: 'true'},
-        "Friday":{type: Boolean,default: 'true'},
-        "Saturday":{type: Boolean,default: 'true'}
+        "Area":{type: Boolean,default: 'false'},
+        "Train":{type: Boolean,default: 'false'},
+        "Express":{type: Boolean,default: 'false'},
+        "Sunday":{type: Boolean,default: 'false'},
+        "Monday":{type: Boolean,default: 'false'},
+        "Tuesday":{type: Boolean,default: 'false'},
+        "Wednesday":{type: Boolean,default: 'false'},
+        "Thursday":{type: Boolean,default: 'false'},
+        "Friday":{type: Boolean,default: 'false'},
+        "Saturday":{type: Boolean,default: 'false'}
         
     },
     {

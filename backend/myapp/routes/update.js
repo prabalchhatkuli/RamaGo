@@ -47,13 +47,52 @@ var handleFileInformation = async function(req, res, next){
   let csvArray = await GetFileInformation(res);
   //validate*********************************************************************validate*********************
   let temp_array=[...csvArray.resultData];
+  //ADD info to each row of the table
+  switch(req.body.Route){
+    case 'Area':
+      temp_array.forEach(function (element) {
+        element.Area = true;
+      });
+      break;
+    case 'Train':
+      temp_array.forEach(function (element) {
+        element.Train = true;
+      });
+      break;
+    case 'Both':
+      temp_array.forEach(function (element) {
+        element.Area = true;
+        element.Train = true;
+      });
+      break;
+    case 'Express':
+      temp_array.forEach(function (element) {
+        element.Express = true;
+      });
+      break;
+    default:
+      break;
+  }
+
+  temp_array.forEach(function (element) {
+    
+    for (var key of Object.keys(req.body.daysAffected)) {
+      if(req.body.daysAffected[key]==='on')
+      {
+        element[key]=true;
+      }
+    }
+  });
+
+  console.log(temp_array);
   
-    console.log(temp_array[0]['Leave Campus']);
-  res.status(200).send({receipt:"good"})
 
+  //remove all records with day={daysAffected} && route={route}
+  updateConflicts(req.body.Route, req.body.daysAffected);
   //update Database with information
-  await updateDatabase(csvArray);
+//** */  await updateDatabase(csvArray);
 
+  res.status(200).send({receipt:"good"})
   res.end();
 
   //compress database
@@ -77,6 +116,58 @@ const processCSV = function(){
       resolve();
   })
 })}
+
+const updateConflicts = function(route, daysAffected){
+    //find documents based on route
+          //out of the found documents find the ones whose days are affected i.e. are true and are 'on' in daysAffected
+        //for each date of the documents update the document to show false on that date.
+    //there should be one area and one train for each day, it can be same as well.
+    
+    let listOfConflictedDays;
+    let listOfConflictedDoc; //contains ID
+    for (var key of Object.keys(daysAffected)) {
+      if(daysAffected[key]==='on')
+      {
+        listOfConflictedDays.push(key);
+      }
+    }
+
+    if(route==='Area')
+    {
+      Schedule.find({ 'Area': true },function (err, docs) {
+        //for each doc in docs
+          //find docs where at least one day in daysAffected is true
+            //update the doc with the false in each of the day values
+            docs.forEach((doc)=>{
+              daysAffected.forEach((day)=>{
+                if(doc[day]===true)
+                {
+                  if(!(doc._id in listOfConflictedDoc)){
+                  listOfConflictedDoc.push(doc._id);
+                  }
+                }
+              });
+            });
+      });
+      console.log(listOfConflictedDoc);
+    }
+    else if(route==='Train')
+    {
+
+    }
+    else if(route==='Both')
+    {
+
+    }
+    else if(route==='Express')
+    {
+
+    }
+    else
+    {
+      console.log("Error: the given route "+route+" was not found");
+    }
+}
 
 const updateDatabase = function(payload, res){
     Schedule.insertMany(payload.resultData)

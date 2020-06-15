@@ -134,7 +134,7 @@ export default class AreaShuttle extends Component{
         {
             return(
                 <div>
-                    <h3> Find an Area Shuttle </h3>
+                    <h3> Find me a Shuttle </h3>
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label> Origin: </label>
