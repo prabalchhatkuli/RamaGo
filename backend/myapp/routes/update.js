@@ -46,6 +46,7 @@ var handleFileInformation = async function(req, res, next){
   //reads all rows from the csv and parses it into this array
   let csvArray = await GetFileInformation(res);
   //validate*********************************************************************validate*********************
+  console.log(csvArray);
   let temp_array=[...csvArray.resultData];
   //ADD info to each row of the table
   switch(req.body.Route){
@@ -87,9 +88,14 @@ var handleFileInformation = async function(req, res, next){
   console.log(temp_array);
 
   //remove all records with day={daysAffected} && route={route}
-  updateConflicts(req.body.Route, req.body.daysAffected);
+  await updateConflicts(req.body.Route, req.body.daysAffected);
   //update Database with information
-//** */  await updateDatabase(csvArray);
+  // console.log("this is the array sent for insertion:")
+  // console.log(csvArray);
+  await updateDatabase(csvArray);
+  
+  //delete unused documents
+  await compressdatabase();
 
   res.status(200).send({receipt:"good"})
   res.end();
@@ -99,22 +105,12 @@ var handleFileInformation = async function(req, res, next){
 
 //process file
 const processCSV = function(){
-  return new Promise((resolve, reject)=>{
+  // return new Promise(async (resolve, reject)=>{
     var filePath = './routes/temp_uploads/' + filenum;
-    fs.readFile(filePath, function (err,data) {
-      if (err) {
-        reject(err);
-      }
-      var result = data.toString().replace(/[\u200B-\u200D\uFEFF]/g, "");
-    
-      fs.writeFile(filePath, result, function (err) {
-         if (err){
-           reject(err)
-         };
-      });
-      resolve();
-  })
-})}
+    const data = fs.readFileSync(filePath);
+    var result = data.toString().replace(/[\u200B-\u200D\uFEFF]/g, "");
+    fs.writeFileSync(filePath, result);
+}
 
 const updateConflicts = async function(route, daysAffected){
     //find documents based on route
@@ -126,7 +122,7 @@ const updateConflicts = async function(route, daysAffected){
     let listOfConflictedDays=[];
     let listOfConflictedDoc=[]; //contains ID
     let docUpdate = {};
-    for (var key of Object.keys(daysAffected)) {
+    for (let key of Object.keys(daysAffected)) {
       if(daysAffected[key]==='on')
       {
         listOfConflictedDays.push(key);
@@ -229,16 +225,18 @@ const updateConflicts = async function(route, daysAffected){
     console.log("Modified docs = " + res.nModified);
 }
 
-const updateDatabase = function(payload, res){
-    Schedule.insertMany(payload.resultData)
+const updateDatabase = async function(payload, res){
+    console.log("This is the payload data sent to insert");
+    console.log(payload.resultData);
+    await Schedule.insertMany(payload.resultData)
     .then(function(){ 
       console.log("Data inserted")  // Success 
-  })
+    })
     .catch(function(error){ 
       console.log(error)      // Failure 
-      return res.status(400).send({
+      /*return res.status(400).send({
         message: 'Error while inserting in database!'
-    });
+    });*/
   })
 }
 
@@ -275,13 +273,15 @@ const GetFileInformation = function(res){
         //   { NAME: 'Bugs Bunny', AGE: '22' }                      // resposonse that you get
         // ]
         //results is an array of dictionary objects
-        resolve({"resultData": results})                                           
+        resolve({"resultData": results});                            
     });
   })
 }
 
-const compressdatabase = function(){
-  //remove unused columns, rows, in the database
+const compressdatabase = async function(){
+  //remove unused columns, rows, that do not have connection with any Routes{Area, Train, Express} in the database
+  let res = await Schedule.deleteMany({'Sunday':false,'Monday':false,'Tuesday':false,'Wednesday':false,'Thursday':false,'Friday':false,'Saturday':false,});
+  console.log("Documents deleted on compression = " + res.deletedCount);
 }
 
 router.post('/uploadfile', handleUploadedFile);
