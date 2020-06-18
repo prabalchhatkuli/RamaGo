@@ -114,12 +114,40 @@ var getDataByQuery = async function(req, res, next){
     //getDataByQuerying the database
     //query for documents that have the origin, dest not '-', and that have the given date true
     //need to verify time so that proper time can be taken from the record
+    if(req.body.origin==='Ramapo'){
+        req.body.origin='Leave Campus'
+    }
     let initialDocList = await Schedule.find({ [req.body.origin]: {$ne: "-"}, [req.body.dest]: {$ne: "-"}, [req.body.day]: true});
 
-    //filter based on time
-    // console.log(initialDocList);
-    // console.log('--------------------------------'+initialDocList.length);
-    
+    //filter based on time on origin 
+    //***************************************************************************GIve this to client */
+    let filteredList=initialDocList.filter(function(each){
+        console.log(each[req.body.origin]);
+        console.log(req.body.time);
+        let dataTime = (each[req.body.origin]).split(" ");
+        let reqTime = (req.body.time).split(" ");
+        if(dataTime.length !==2 || reqTime.length !==2)
+        {
+            console.log("Error processing file - error in reading time format");
+        }
+        if((reqTime[1].toLowerCase() === 'am' && dataTime[1].toLowerCase() === 'pm')) return true;
+        if((reqTime[1].toLowerCase() === 'pm' && dataTime[1].toLowerCase() === 'pm')){
+            if(reqTime[0] === dataTime[0]){
+                return true;
+            }
+            else
+            {
+                return compareTime(reqTime[0], dataTime[0]);
+            }
+        }
+        else
+        {
+            return false;
+        }
+    })
+    //***************************************************************************Give this to client to handle */
+    res.send(filteredList);
+
 }
 //needs day field sent to server
 router.get('/displayByDay', getDataByDay);

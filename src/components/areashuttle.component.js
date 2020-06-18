@@ -44,8 +44,8 @@ export default class AreaShuttle extends Component{
             var currentTime = new Date();
             var dayOfWeek = dayList[currentTime.getDay()];
             this.setState({
-                origin:'Ramapo',
-                dest: 'Select',
+                origin:'Leave Campus',
+                dest: 'Interstate',
                 day: dayOfWeek,
                 time: currentTime
             });
@@ -57,6 +57,14 @@ export default class AreaShuttle extends Component{
                 origin: e.target.value
             }
         );
+        if(e.target.value==='Ramapo')
+        {
+            this.setState(
+                {
+                    origin: 'Leave Campus'
+                }
+            );
+        }
     }
 
     onChangedDest(e){
@@ -126,6 +134,7 @@ export default class AreaShuttle extends Component{
             return(<AddressList
                 origin={this.state.origin}
                 dest={this.state.dest}
+                time={this.state.time}
                 routeList={this.state.routeList}
             />);
         }
@@ -133,63 +142,71 @@ export default class AreaShuttle extends Component{
         {
             return(
                 <div>
-                    <h3> Find me a Shuttle </h3>
-                    <form onSubmit={this.onSubmit}>
-                        <div className="form-group">
-                            <label> Origin: </label>
-                            <select ref="userInput" className="form-control" value={this.state.origin} onChange={this.onChangedOrigin}>
-                            {
-                                originList.map(function(origin){
-                                    return <option key={origin} value={origin}>{origin} </option>;
-                                })
-                            }
-                            </select>
-                        </div>
+                    <div>
+                        <form>
+                            <input type="submit" value="View Schedule by Day" className="btn btn-primary"/>{' '}
+                            <input type="submit" value="View Schedule by Route" className="btn btn-primary"/>
+                        </form>
+                    </div>
+                    <div>
+                        <h3> Find me a Shuttle </h3>
+                        <form onSubmit={this.onSubmit}>
+                            <div className="form-group">
+                                <label> Origin: </label>
+                                <select ref="userInput" className="form-control" value={this.state.origin} onChange={this.onChangedOrigin}>
+                                {
+                                    originList.map(function(origin){
+                                        return <option key={origin} value={origin}>{origin} </option>;
+                                    })
+                                }
+                                </select>
+                            </div>
 
-                        <div className="form-group">
-                            <label> Destination: </label>
-                            <select ref="userInput" className="form-control" value={this.state.dest} onChange={this.onChangedDest}>
-                            {
-                                destList.map(function(dest){
-                                    return <option key={dest} value={dest}>{dest} </option>;
-                                })
-                            }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label> Day of Week: </label>
-                            <select ref="userInput" className="form-control" value={this.state.day} onChange={this.onChangedDay}>
-                            {
-                                dayList.map(function(day){
-                                    var dayDisplayString = day;
-                                    if(day===(dayList[(new Date()).getDay()])){
-                                        dayDisplayString= dayDisplayString+' (today)';
-                                    }
-                                    return <option key={day} value={day}>{dayDisplayString} </option>;
-                                })
-                            }
-                            </select>
-                        </div >
+                            <div className="form-group">
+                                <label> Destination: </label>
+                                <select ref="userInput" className="form-control" value={this.state.dest} onChange={this.onChangedDest}>
+                                {
+                                    destList.map(function(dest){
+                                        return <option key={dest} value={dest}>{dest} </option>;
+                                    })
+                                }
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label> Day of Week: </label>
+                                <select ref="userInput" className="form-control" value={this.state.day} onChange={this.onChangedDay}>
+                                {
+                                    dayList.map(function(day){
+                                        var dayDisplayString = day;
+                                        if(day===(dayList[(new Date()).getDay()])){
+                                            dayDisplayString= dayDisplayString+' (today)';
+                                        }
+                                        return <option key={day} value={day}>{dayDisplayString} </option>;
+                                    })
+                                }
+                                </select>
+                            </div >
 
-                        <div className="form-group">
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <label>Time:</label>
-                                <TimePicker 
-                                fullWidth
-                                mode='12h'
-                                margin="normal"
-                                variant="outlined"
-                                value={this.state.time}
-                                onChange={this.onChangedTime}/>
-                        
-                        </MuiPickersUtilsProvider>
-                        </div>
+                            <div className="form-group">
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <label>Time:</label>
+                                    <TimePicker 
+                                    fullWidth
+                                    mode='12h'
+                                    margin="normal"
+                                    variant="outlined"
+                                    value={this.state.time}
+                                    onChange={this.onChangedTime}/>
+                            
+                            </MuiPickersUtilsProvider>
+                            </div>
 
-                        <div className="form-group">
-                            <input type="submit" value="Find Area Schedule" className="btn btn-primary"/>
-                        </div>
+                            <div className="form-group">
+                                <input type="submit" value="Find Area Schedule" className="btn btn-primary"/>
+                            </div>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
             )
         }             
