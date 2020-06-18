@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var csvParser = require('csv-parser');
 var fs = require('fs');
+const Schedule = require('../models/schedule.model');
 
 
 var getDataByDay = function(day, res){
@@ -106,6 +107,20 @@ var getDataByDestAndTime = async function(req, res, next){
     
 };
 
+
+var getDataByQuery = async function(req, res, next){
+    //req.body in the form { origin: 'Ramapo', dest: 'Select', time: '8:54 PM', day: 'Tuesday' }
+    //validate input
+    //getDataByQuerying the database
+    //query for documents that have the origin, dest not '-', and that have the given date true
+    //need to verify time so that proper time can be taken from the record
+    let initialDocList = await Schedule.find({ [req.body.origin]: {$ne: "-"}, [req.body.dest]: {$ne: "-"}, [req.body.day]: true});
+
+    //filter based on time
+    // console.log(initialDocList);
+    // console.log('--------------------------------'+initialDocList.length);
+    
+}
 //needs day field sent to server
 router.get('/displayByDay', getDataByDay);
 
@@ -117,5 +132,7 @@ router.get('/displayByTime', getDataByTime);
 //      1) with day field 
 //      2) with time field
 router.post('/displayByDestination',getDataByDestAndTime);
+
+router.post('/displayByQuery',getDataByQuery);
 
 module.exports = router;

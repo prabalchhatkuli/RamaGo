@@ -102,10 +102,10 @@ export default class AreaShuttle extends Component{
                 //if no error proceed to set state else: display error *
             try
             {
-                const response = await axios.post('http://localhost:5000/database/displayByDestination',schedule);
+                const response = await axios.post('http://localhost:5000/database/displayByQuery',schedule);
 
                 //no need to implement callback
-                this.setState(()=>({
+                await this.setState(()=>({
                     receivedData: true,
                     routeList: response.data 
                 }));
@@ -118,7 +118,6 @@ export default class AreaShuttle extends Component{
             //.then(console.log(this.state.routeList));
             //.then(res=>console.log(res.data))
             //window.location = '/';
-            
     }
 
     render(){
