@@ -11,7 +11,7 @@ export default class Naviagation extends Component{
     render(){
        return(
         <Navbar collapseOnSelect expand="lg" variant="dark" style={{"backgroundColor":"#8c0000"}}>
-				<Navbar.Brand href="/">RamaGo</Navbar.Brand>
+				<Navbar.Brand href="/">RamaGo<sup>Beta</sup></Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="ml-auto">

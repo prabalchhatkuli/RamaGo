@@ -4,6 +4,7 @@ import '../stylesheets/customSheet.css';
 //import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import CardGroup from 'react-bootstrap/CardGroup';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 
 
 export default class MainPage extends Component{
@@ -11,6 +12,16 @@ export default class MainPage extends Component{
         return(
             
             <div>
+                <Jumbotron>
+                <h1>Hello, Roadrunners!</h1>
+                <p>
+                    This is a web application bootstrap with React and React-boostrap. The data on 
+                    this page gets updated regularly.
+                </p>
+                <p>
+                    <Button variant="primary">Learn more.</Button>
+                </p>
+                </Jumbotron>
                 <CardGroup>
             
                     <Card className="text-center">

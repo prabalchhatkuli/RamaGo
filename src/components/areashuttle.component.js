@@ -1,8 +1,10 @@
 import React, { Component} from 'react';
 import DateFnsUtils from '@date-io/date-fns';
+import Button from 'react-bootstrap/Button';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import axios from 'axios'
-import AddressList from "../components/listgroup.component";
+import AddressList from "./listgroup.component";
+import Dialog from './dialog.component'
 
 //need to obtain information about the day's destination from a ajax call to the server
 const dayList=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -30,6 +32,7 @@ export default class AreaShuttle extends Component{
         this.onChangedDay = this.onChangedDay.bind(this);
         this.onChangedTime = this.onChangedTime.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onDropdownClick = this.onDropdownClick.bind(this);
 
         this.state = {
             origin : '',
@@ -91,6 +94,10 @@ export default class AreaShuttle extends Component{
         )
     }
 
+    onDropdownClick(value){
+        console.log("clicked button "+ value);
+    }
+
     async onSubmit(e){
             e.preventDefault();
 
@@ -142,14 +149,22 @@ export default class AreaShuttle extends Component{
         {
             return(
                 <div>
-                    <div>
-                        <form>
-                            <input type="submit" value="View Schedule by Day" className="btn btn-primary"/>{' '}
-                            <input type="submit" value="View Schedule by Route" className="btn btn-primary"/>
-                        </form>
+                    <hr/>
+                    <div className="row">
+                        <div className="col-md-12 text-center">
+                            <Dialog/>
+                            {/* <Button id="dropdown-basic-button">Find Schedule by <u>Day and Route</u></Button> */}
+                        </div>
                     </div>
+                    <hr/>
+                    <div className="row">
+                        <div className="col-md-12 text-center">
+                            <h4>or</h4>
+                        </div>
+                    </div>
+                    <hr/>
                     <div>
-                        <h3> Find me a Shuttle </h3>
+                        <h3 className="col-md-12 text-center"> Find me a Shuttle </h3>
                         <form onSubmit={this.onSubmit}>
                             <div className="form-group">
                                 <label> Origin: </label>
@@ -207,6 +222,7 @@ export default class AreaShuttle extends Component{
 
                         </form>
                     </div>
+                    <hr/>
                 </div>
             )
         }             
