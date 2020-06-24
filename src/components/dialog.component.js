@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
+
 const useStyles = makeStyles((theme) => ({
   button: {
     display: 'block',
@@ -27,15 +28,15 @@ export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [openSelect, setOpenSelect] = React.useState(false);
 
-  const [age, setAge] = React.useState('');
+  const [day, setDay] = React.useState('');
 
   const handleChange =(event) => {
-    setAge(event.target.value);
+    setDay(event.target.value);
   };
 
   React.useEffect(() => {
-    console.log('Do something after counter has changed', age);
- }, [age]);
+    console.log('Do something after counter has changed', day);
+ }, [day]);
 
   const handleCloseSelect = () => {
     setOpenSelect(false);
@@ -72,7 +73,7 @@ export default function FormDialog() {
             open={openSelect}
             onClose={handleCloseSelect}
             onOpen={handleOpen}
-            value={age}
+            value={day}
             onChange={handleChange}
           >
             <MenuItem value="">
