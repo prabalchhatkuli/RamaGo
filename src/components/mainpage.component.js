@@ -19,7 +19,7 @@ export default class MainPage extends Component{
                     this page gets updated regularly.
                 </p>
                 <p>
-                    <Button variant="primary">Learn more.</Button>
+                    <Button variant="primary" href="https://github.com/prabalchhatkuli/RamaGo">Learn more.</Button>
                 </p>
                 </Jumbotron>
                 <CardGroup>

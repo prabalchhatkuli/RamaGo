@@ -6,25 +6,44 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }));
-  
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
 
 export default function FormDialog() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [openSelect, setOpenSelect] = React.useState(false);
+
+  const [age, setAge] = React.useState('');
+
+  const handleChange =(event) => {
+    setAge(event.target.value);
+  };
+
+  React.useEffect(() => {
+    console.log('Do something after counter has changed', age);
+ }, [age]);
+
+  const handleCloseSelect = () => {
+    setOpenSelect(false);
+  };
+
+  const handleOpen = () => {
+    setOpenSelect(true);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,39 +56,44 @@ export default function FormDialog() {
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        View Schedule By Day and Route
+         View Schedule By Day and Route
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">View Schedule By Day and Route</DialogTitle>
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please choose a day and (optionally)a route.
-          </DialogContentText>
-          {/* insert form information here */}
+        <DialogContentText>
+             Please choose a day and (optionally)a route.
+        </DialogContentText>
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Day</InputLabel>
-            <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            // value={age}
-            // onChange={handleChange}
-            >
-            <MenuItem value={10}>Sunday</MenuItem>
-            <MenuItem value={20}>Monday</MenuItem>
-            <MenuItem value={30}>Tuesday</MenuItem>
-            <MenuItem value={40}>Wednesday</MenuItem>
-            <MenuItem value={50}>Thursday</MenuItem>
-            <MenuItem value={60}>Friday</MenuItem>
-            <MenuItem value={70}>Saturday</MenuItem>
-            </Select>
-        </FormControl>
+          <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-controlled-open-select-label"
+            id="demo-controlled-open-select"
+            open={openSelect}
+            onClose={handleCloseSelect}
+            onOpen={handleOpen}
+            value={age}
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+             <MenuItem value={"Sunday"}>Sunday</MenuItem>
+             <MenuItem value={"Monday"}>Monday</MenuItem>
+             <MenuItem value={"Tuesday"}>Tuesday</MenuItem>
+             <MenuItem value={"Wednesday"}>Wednesday</MenuItem>
+             <MenuItem value={"Thursday"}>Thursday</MenuItem>
+             <MenuItem value={"Friday"}>Friday</MenuItem>
+             <MenuItem value={"Saturday"}>Saturday</MenuItem>
+          </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleClose} color="primary">
-            Let's Go
+            Subscribe
           </Button>
         </DialogActions>
       </Dialog>
