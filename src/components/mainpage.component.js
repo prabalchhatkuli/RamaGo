@@ -15,7 +15,7 @@ export default class MainPage extends Component{
                 <Jumbotron>
                 <h1>Hello, Roadrunners!</h1>
                 <p>
-                    This is a web application bootstrap with React and React-boostrap. The data on 
+                    This is a web application bootstrapped with React and React-boostrap. The data on 
                     this page gets updated regularly.
                 </p>
                 <p>

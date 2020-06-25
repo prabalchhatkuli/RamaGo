@@ -5,38 +5,8 @@ var fs = require('fs');
 const Schedule = require('../models/schedule.model');
 
 
-var getDataByDay = function(day, res){
-    return new Promise((resolve, reject) =>{
-    var results = [];
-    var filePath = './public/csv/' + day + '.csv';
-    console.log(filePath);
-    //creating & reading from stream
-    fs.createReadStream(filePath)
-    .on('error',() =>{
-        console.log('Error with the file path while creating read stream');
-        return res.status(400).send({
-            message: 'Error with the file path while creating read stream!'
-        });
-    })
-    .pipe(csvParser())
-    .on('data', (data) => {
-        results.push(data);
-    })
-    .on('error',() =>{
-        console.log('Error reading data from file');
-        return res.status(400).send({
-            message: 'Error reading data from file'
-         });
-    })
-    .on('end', () => {
-        // [
-        //   { NAME: 'Daffy Duck', AGE: '24' },  --> row
-        //   { NAME: 'Bugs Bunny', AGE: '22' }                      // resposonse that you get
-        // ]
-        //results is an array of dictionary objects
-        resolve({"resultData": results})                                           
-    });
-    });
+var getDataByDay = function(req,res, next){
+    console.log(req.body);
 };
 
 
@@ -150,7 +120,7 @@ var getDataByQuery = async function(req, res, next){
 
 }
 //needs day field sent to server
-router.get('/displayByDay', getDataByDay);
+router.post('/displayByDay', getDataByDay);
 
 //needs time field always accompanied by day field  --> gets day data --> processes day data according to time --> for view -> list of destinations at or after that time
 //     + 1) with dest field --> gets above--> processes the next available time/s to that destination

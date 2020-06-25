@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +56,23 @@ export default function FormDialog() {
     setOpen(false);
   };
 
+  const handleSubmit = async () => {
+    let payload={'day':day};
+    try
+      {
+        const response = await axios.post('http://localhost:5000/database/displayByDay',payload);
+      }
+      catch(error)
+      {
+          console.log(error);
+          const errorMsg = "Error in query. Please try again."
+          ReactDOM.render(errorMsg, document.getElementById('try-again-text'));
+          return;
+      }
+    
+     setOpen(false);
+  }
+
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
@@ -66,7 +85,7 @@ export default function FormDialog() {
              Please choose a day and (optionally)a route.
         </DialogContentText>
           <FormControl className={classes.formControl}>
-          <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+          <InputLabel id="demo-controlled-open-select-label">Day</InputLabel>
           <Select
             labelId="demo-controlled-open-select-label"
             id="demo-controlled-open-select"
@@ -88,13 +107,15 @@ export default function FormDialog() {
              <MenuItem value={"Saturday"}>Saturday</MenuItem>
           </Select>
           </FormControl>
+        <DialogContentText id="try-again-text" className="text-warning">
+        </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button onClick={handleSubmit} color="primary">
+            Submit
           </Button>
         </DialogActions>
       </Dialog>

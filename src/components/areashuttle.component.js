@@ -152,7 +152,7 @@ export default class AreaShuttle extends Component{
                     <hr/>
                     <div className="row">
                         <div className="col-md-12 text-center">
-                            <Dialog/>
+                            <Dialog />
                             {/* <Button id="dropdown-basic-button">Find Schedule by <u>Day and Route</u></Button> */}
                         </div>
                     </div>
