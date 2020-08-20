@@ -4,12 +4,12 @@ var csvParser = require('csv-parser');
 var fs = require('fs');
 const Schedule = require('../models/schedule.model');
 
-
+//retrieve data from database based on given day and tranportation type
 var getDataByDay = function(req,res, next){
     console.log(req.body);
 };
 
-
+//retrieve data from the database
 var getDataByTime = function(req, res, next){
     
 };
@@ -115,7 +115,7 @@ var getDataByQuery = async function(req, res, next){
             return false;
         }
     })
-    //***************************************************************************Give this to client to handle */
+    //*******************Give this to client to handle */
     res.send(filteredList);
 
 }

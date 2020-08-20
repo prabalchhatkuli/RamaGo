@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require('cors');
+var cors = require('cors'); //cross origin
 //-----------------------------added dependencies-------------------------
 //const csv = require('csv-parser');
 require('dotenv').config()
@@ -33,7 +33,7 @@ const connection=mongoose.connection;
 connection.once('open',()=>{
   console.log("MongoDB database connection established successfully.");
 })
-//---------------------------------------------------
+//-------------------routes--------------------------------
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/database', databaseRouter);

@@ -2,35 +2,6 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-// const singleSchedule = new Schema({
-//     "ListOfStops":[String],
-//     "Schedule":{}
-// })
-
-// const typeofSchedule = new Schema({
-//     "AreaSchedule":[singleSchedule],
-//     "TrainSchedule":[singleSchedule],
-//     "Both":[singleSchedule],
-//     "GardenState":[singleSchedule]
-// })
-
-// const scheduleSchema = new Schema({
-//     //this schema will contain all the possible destinations in the csv file
-
-//         "Sunday":[typeofSchedule],
-//         "Monday":[typeofSchedule],
-//         "Tuesday":[typeofSchedule],
-//         "Wednesday":[typeofSchedule],
-//         "Thursday":[typeofSchedule],
-//         "Friday":[typeofSchedule],
-//         "Saturday":[typeofSchedule]
-        
-//     },
-//     {
-//         timestamps:true
-//     }
-// )
-
 const scheduleSchema = new Schema({
     //this schema will contain all the possible destinations in the csv file
         "Leave Campus":{type: String,default: '-'},

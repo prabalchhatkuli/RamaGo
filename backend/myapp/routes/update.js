@@ -16,7 +16,7 @@ var handleUploadedFile = async function(req, res, next){
     form.parse(req);
 
     form.on('fileBegin', function(name, file){
-      //change this to appropriate file system************************************************remember to change***********
+      //change this to appropriate file system
       file.name=filenum;
       file.path=`${__dirname}\\temp_uploads\\${file.name}`;
     });
@@ -270,7 +270,7 @@ const GetFileInformation = function(res){
     .on('end', () => {
         // [
         //   { NAME: 'Daffy Duck', AGE: '24' },  --> row
-        //   { NAME: 'Bugs Bunny', AGE: '22' }                      // resposonse that you get
+        //   { NAME: 'Bugs Bunny', AGE: '22' }              // resposonse that you get
         // ]
         //results is an array of dictionary objects
         resolve({"resultData": results});                            
